@@ -1,0 +1,74 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/ec2-user/Redistest/Redistest.csproj": {}
+  },
+  "projects": {
+    "/home/ec2-user/Redistest/Redistest.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/ec2-user/Redistest/Redistest.csproj",
+        "projectName": "Redistest",
+        "projectPath": "/home/ec2-user/Redistest/Redistest.csproj",
+        "packagesPath": "/home/ec2-user/.nuget/packages/",
+        "outputPath": "/home/ec2-user/Redistest/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/ec2-user/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Faker.Net": {
+              "target": "Package",
+              "version": "[1.5.148, )"
+            },
+            "Microsoft.Extensions.Configuration.UserSecrets": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "StackExchange.Redis": {
+              "target": "Package",
+              "version": "[2.2.50, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/home/linuxbrew/.linuxbrew/Cellar/dotnet/5.0.206/libexec/sdk/5.0.206/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
