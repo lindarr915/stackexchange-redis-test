@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/ec2-user/Redistest/Redistest.csproj": {}
+    "/home/ubuntu/stackexchange-redis-test/Redistest.csproj": {}
   },
   "projects": {
-    "/home/ec2-user/Redistest/Redistest.csproj": {
+    "/home/ubuntu/stackexchange-redis-test/Redistest.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/ec2-user/Redistest/Redistest.csproj",
+        "projectUniqueName": "/home/ubuntu/stackexchange-redis-test/Redistest.csproj",
         "projectName": "Redistest",
-        "projectPath": "/home/ec2-user/Redistest/Redistest.csproj",
-        "packagesPath": "/home/ec2-user/.nuget/packages/",
-        "outputPath": "/home/ec2-user/Redistest/obj/",
+        "projectPath": "/home/ubuntu/stackexchange-redis-test/Redistest.csproj",
+        "packagesPath": "/home/ubuntu/.nuget/packages/",
+        "outputPath": "/home/ubuntu/stackexchange-redis-test/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/ec2-user/.nuget/NuGet/NuGet.Config"
+          "/home/ubuntu/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"

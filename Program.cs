@@ -38,33 +38,62 @@ namespace Redistest
         {
             IDatabase cache = RedisConnectorHelper.Connection.GetDatabase();
 
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 100; i++)
             {
                 string GUID = Guid.NewGuid().ToString();
-                cache.StringSet(GUID, LoremIpsum(20, 40, 2, 3, 4));
+                cache.StringSet(GUID, LoremIpsum(20, 40, 2, 3, 1));
                 Console.WriteLine("Key: " + GUID + ", Value: " + cache.StringGet(GUID).ToString());
             }
         }
 
 
-        static void Main(string[] args)
+        private static async Task WriteDataToRedisAysnc(int count)
+        {
+            IDatabase cache = RedisConnectorHelper.Connection.GetDatabase();
+            Task<bool>[] RandomSetStringTask = new Task<bool>[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                string GUID = Guid.NewGuid().ToString();
+                Console.WriteLine(String.Format("Calling aync method {0}", i));
+                RandomSetStringTask[i] = cache.StringSetAsync(GUID, LoremIpsum(20, 40, 2, 3, 1));
+            }
+            await Task.WhenAll(RandomSetStringTask);
+            return;
+        }
+
+
+        async static Task Main(string[] args)
         {
 
             // Test t = new Test();  
-            Thread[] tr = new Thread[10];
+            Thread[] tr = new Thread[4];
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 4; i++)
             {
                 tr[i] = new Thread(new ThreadStart(WriteDataToRedis));
                 tr[i].Name = String.Format("Working Thread: {0}", i);
             }
             //Start each thread  
-
             foreach (Thread x in tr) { x.Start(); }
             foreach (Thread x in tr) { x.Join(); }
 
+            // Async mode
+            for (int i = 0; i < 5; i++)
+            {
+                await WriteDataToRedisAysnc(20);
+            }
 
             IDatabase cache = RedisConnectorHelper.Connection.GetDatabase();
+
+            // Fire-and-Forget
+            string pageKey = "/catalog/49865/";
+            for (int i = 0; i < 500000; i++)
+            {
+                cache.StringIncrement(pageKey, flags: CommandFlags.FireAndForget);
+                Console.WriteLine("Page View +1");
+            }
+
             // Simple PING command
             string cacheCommand = "PING";
             Console.WriteLine("\nCache command  : " + cacheCommand);
