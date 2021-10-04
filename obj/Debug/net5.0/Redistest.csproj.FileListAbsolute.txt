@@ -1,4 +1,3 @@
-/home/ec2-user/Redistest/obj/Debug/net5.0/Redistest.csprojAssemblyReference.cache
 /home/ec2-user/Redistest/obj/Debug/net5.0/Redistest.GeneratedMSBuildEditorConfig.editorconfig
 /home/ec2-user/Redistest/obj/Debug/net5.0/Redistest.AssemblyInfoInputs.cache
 /home/ec2-user/Redistest/obj/Debug/net5.0/Redistest.AssemblyInfo.cs
@@ -31,14 +30,5 @@
 /home/ec2-user/Redistest/obj/Debug/net5.0/ref/Redistest.dll
 /home/ec2-user/Redistest/obj/Debug/net5.0/Redistest.pdb
 /home/ec2-user/Redistest/obj/Debug/net5.0/Redistest.genruntimeconfig.cache
-/home/ec2-user/Redistest/bin/Debug/net5.0/Microsoft.Extensions.Configuration.dll
-/home/ec2-user/Redistest/bin/Debug/net5.0/Microsoft.Extensions.Configuration.Abstractions.dll
-/home/ec2-user/Redistest/bin/Debug/net5.0/Microsoft.Extensions.Configuration.FileExtensions.dll
-/home/ec2-user/Redistest/bin/Debug/net5.0/Microsoft.Extensions.Configuration.Json.dll
-/home/ec2-user/Redistest/bin/Debug/net5.0/Microsoft.Extensions.Configuration.UserSecrets.dll
-/home/ec2-user/Redistest/bin/Debug/net5.0/Microsoft.Extensions.FileProviders.Abstractions.dll
-/home/ec2-user/Redistest/bin/Debug/net5.0/Microsoft.Extensions.FileProviders.Physical.dll
-/home/ec2-user/Redistest/bin/Debug/net5.0/Microsoft.Extensions.FileSystemGlobbing.dll
-/home/ec2-user/Redistest/bin/Debug/net5.0/Microsoft.Extensions.Primitives.dll
-/home/ec2-user/Redistest/bin/Debug/net5.0/Faker.Net.5.0.dll
-/home/ec2-user/Redistest/bin/Debug/net5.0/de-DE/Faker.Net.5.0.resources.dll
+/home/ec2-user/Redistest/bin/Debug/net5.0/Microsoft.Bcl.AsyncInterfaces.dll
+/home/ec2-user/Redistest/obj/Debug/net5.0/Redistest.csproj.AssemblyReference.cache
