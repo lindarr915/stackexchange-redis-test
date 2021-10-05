@@ -843,11 +843,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/ubuntu/stackexchange-redis-test/Redistest.csproj",
-      "projectName": "Redistest",
-      "projectPath": "/home/ubuntu/stackexchange-redis-test/Redistest.csproj",
+      "projectUniqueName": "/home/ubuntu/redis-dotnet-sample/RedisDotnetSample.csproj",
+      "projectName": "RedisDotnetSample",
+      "projectPath": "/home/ubuntu/redis-dotnet-sample/RedisDotnetSample.csproj",
       "packagesPath": "/home/ubuntu/.nuget/packages/",
-      "outputPath": "/home/ubuntu/stackexchange-redis-test/obj/",
+      "outputPath": "/home/ubuntu/redis-dotnet-sample/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/ubuntu/.nuget/NuGet/NuGet.Config"

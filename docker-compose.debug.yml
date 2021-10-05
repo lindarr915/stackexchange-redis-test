@@ -2,8 +2,8 @@
 version: '3.4'
 
 services:
-  redistest:
-    image: redistest
+  redisdotnetsample:
+    image: redisdotnetsample
     build:
       context: .
       dockerfile: ./Dockerfile

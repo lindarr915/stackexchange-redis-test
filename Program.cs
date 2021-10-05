@@ -7,7 +7,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Redistest
+namespace RedisDotnetSample
 {
     public class RedisConnectorHelper
     {

@@ -25,14 +25,14 @@
                 "build"
             ],
             "dockerBuild": {
-                "tag": "redistest:dev",
+                "tag": "redisdotnetSample:dev",
                 "target": "base",
                 "dockerfile": "${workspaceFolder}/Dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/Redistest.csproj"
+                "appProject": "${workspaceFolder}/RedisDotnetSample.csproj"
             }
         },
         {
@@ -42,13 +42,13 @@
                 "build"
             ],
             "dockerBuild": {
-                "tag": "redistest:latest",
+                "tag": "redisdotnetsample:latest",
                 "dockerfile": "${workspaceFolder}/Dockerfile",
                 "context": "${workspaceFolder}",
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/Redistest.csproj"
+                "appProject": "${workspaceFolder}/RedisDotnetSample.csproj"
             }
         },
         {
@@ -59,7 +59,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/Redistest.csproj",
+                "appProject": "${workspaceFolder}/RedisDotnetSample.csproj",
                 "enableDebugging": true
             }
         },
@@ -71,7 +71,7 @@
             ],
             "dockerRun": {},
             "netCore": {
-                "appProject": "${workspaceFolder}/Redistest.csproj"
+                "appProject": "${workspaceFolder}/RedisDotnetSample.csproj"
             }
         }
     ]

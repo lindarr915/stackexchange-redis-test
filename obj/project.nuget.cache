@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CUu24bHKRiUxOsd0IFlh7H/5QYcgLqV/KWHm98nrod34+gEGCIYKWXcdVqWWDw824ffrY3jE9P73/x6CFNZ9xg==",
+  "dgSpecHash": "6Wyl3WCewK9zSe+3R2G13oVQlGPPcfqPyNk8BdODefYbIpbCw8TeeheJHClbVysf3Qf6+D92Wbmt3piXZvI+zA==",
   "success": true,
-  "projectFilePath": "/home/ubuntu/stackexchange-redis-test/Redistest.csproj",
+  "projectFilePath": "/home/ubuntu/redis-dotnet-sample/RedisDotnetSample.csproj",
   "expectedPackageFiles": [
     "/home/ubuntu/.nuget/packages/microsoft.bcl.asyncinterfaces/1.1.1/microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "/home/ubuntu/.nuget/packages/microsoft.netcore.platforms/3.1.0/microsoft.netcore.platforms.3.1.0.nupkg.sha512",
