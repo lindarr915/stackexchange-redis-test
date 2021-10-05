@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "aws.deploy.cli": {
+      "version": "0.20.12",
+      "commands": [
+        "dotnet-aws"
+      ]
+    }
+  }
+}
