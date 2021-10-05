@@ -1,0 +1,13 @@
+apiVersion: skaffold/v2beta23
+kind: Config
+metadata:
+  name: stackexchange-redis-test
+build:
+  artifacts:
+  - image: 091550601287.dkr.ecr.us-west-2.amazonaws.com/redis-client
+    docker:
+      dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+    - deploy/app.yaml

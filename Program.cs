@@ -42,7 +42,7 @@ namespace Redistest
             {
                 string GUID = Guid.NewGuid().ToString();
                 cache.StringSet(GUID, LoremIpsum(20, 40, 2, 3, 1));
-                Console.WriteLine("Key: " + GUID + ", Value: " + cache.StringGet(GUID).ToString());
+                // Console.WriteLine("Key: " + GUID + ", Value: " + cache.StringGet(GUID).ToString());
             }
         }
 
@@ -55,8 +55,8 @@ namespace Redistest
             for (int i = 0; i < count; i++)
             {
                 string GUID = Guid.NewGuid().ToString();
-                Console.WriteLine(String.Format("Calling aync method {0}", i));
-                RandomSetStringTask[i] = cache.StringSetAsync(GUID, LoremIpsum(20, 40, 2, 3, 1));
+                // Console.WriteLine(String.Format("Calling aync method {0}", i));
+                RandomSetStringTask[i] = cache.StringSetAsync(GUID, LoremIpsum(20, 40, 2, 3, 3));
             }
             await Task.WhenAll(RandomSetStringTask);
             return;
@@ -79,9 +79,9 @@ namespace Redistest
             foreach (Thread x in tr) { x.Join(); }
 
             // Async mode
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 100000000; i++)
             {
-                await WriteDataToRedisAysnc(20);
+                await WriteDataToRedisAysnc(5);
             }
 
             IDatabase cache = RedisConnectorHelper.Connection.GetDatabase();
@@ -184,7 +184,7 @@ namespace Redistest
 
             for (int p = 0; p < numParagraphs; p++)
             {
-                result.Append("<p>");
+                result.Append("---");
                 for (int s = 0; s < numSentences; s++)
                 {
                     for (int w = 0; w < numWords; w++)
@@ -194,7 +194,7 @@ namespace Redistest
                     }
                     result.Append(". ");
                 }
-                result.Append("</p>");
+                result.Append("---");
             }
 
             return result.ToString();

@@ -1,0 +1,14 @@
+
+version: '3.4'
+
+services:
+  redistest:
+    image: redistest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    deploy: 
+      replicas: 5
+    environment:
+      - REDIS_ENDPOINT=darren-demo.lm5w0w.clustercfg.usw2.cache.amazonaws.com 
+

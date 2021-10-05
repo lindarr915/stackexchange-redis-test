@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-test
+spec:
+  selector:
+    matchLabels:
+      app: redis-test
+  template:
+    metadata:
+      labels:
+        app: redis-test
+    spec:
+      containers:
+      - name: redis-test
+        env:
+        - name: REDIS_ENDPOINT
+          value: darren-demo.lm5w0w.clustercfg.usw2.cache.amazonaws.com
+        image: 091550601287.dkr.ecr.us-west-2.amazonaws.com/redis-client
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        # ports:
+        # - containerPort: <Port>
+
