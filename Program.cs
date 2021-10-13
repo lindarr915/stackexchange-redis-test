@@ -10,7 +10,7 @@ using System.IO;
 namespace RedisDotnetSample
 {
     public class RedisConnectorHelper
-    {
+    { 
         static private string cacheConnection = System.Environment.GetEnvironmentVariable("REDIS_ENDPOINT");
 
         static RedisConnectorHelper()
@@ -33,7 +33,6 @@ namespace RedisDotnetSample
     }
     class Program
     {
-
         static void WriteDataToRedis()
         {
             IDatabase cache = RedisConnectorHelper.Connection.GetDatabase();
@@ -45,7 +44,6 @@ namespace RedisDotnetSample
                 // Console.WriteLine("Key: " + GUID + ", Value: " + cache.StringGet(GUID).ToString());
             }
         }
-
 
         private static async Task WriteDataToRedisAysnc(int count)
         {
@@ -62,6 +60,18 @@ namespace RedisDotnetSample
             return;
         }
 
+        private static void FireAndForget()
+        {
+            IDatabase cache = RedisConnectorHelper.Connection.GetDatabase();
+
+            // Fire-and-Forget
+            string pageKey = "/catalog/49865/";
+            for (int i = 0; i < 500000; i++)
+            {
+                cache.StringIncrement(pageKey, flags: CommandFlags.FireAndForget);
+                Console.WriteLine("Page View +1");
+            }
+        }
 
         async static Task Main(string[] args)
         {
@@ -86,13 +96,7 @@ namespace RedisDotnetSample
 
             IDatabase cache = RedisConnectorHelper.Connection.GetDatabase();
 
-            // Fire-and-Forget
-            string pageKey = "/catalog/49865/";
-            for (int i = 0; i < 500000; i++)
-            {
-                cache.StringIncrement(pageKey, flags: CommandFlags.FireAndForget);
-                Console.WriteLine("Page View +1");
-            }
+            FireAndForget();
 
             // Simple PING command
             string cacheCommand = "PING";
