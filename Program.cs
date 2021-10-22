@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using System.Text;
 using System.Collections.Generic;
 using System.IO;
+using System.Diagnostics;
 
 namespace RedisDotnetSample
 {
     public class RedisConnectorHelper
-    { 
+    {
         static private string cacheConnection = System.Environment.GetEnvironmentVariable("REDIS_ENDPOINT");
 
         static RedisConnectorHelper()
@@ -33,15 +34,16 @@ namespace RedisDotnetSample
     }
     class Program
     {
-        static void WriteDataToRedis()
+        static void WriteDataToRedis(int count)
         {
             IDatabase cache = RedisConnectorHelper.Connection.GetDatabase();
 
-            for (int i = 0; i < 100; i++)
+            Stopwatch stopWatch = new Stopwatch();
+            for (int i = 0; i < count; i++)
             {
                 string GUID = Guid.NewGuid().ToString();
                 cache.StringSet(GUID, LoremIpsum(20, 40, 2, 3, 1));
-                // Console.WriteLine("Key: " + GUID + ", Value: " + cache.StringGet(GUID).ToString());
+                Console.WriteLine("Key: " + GUID + ", Value: " + cache.StringGet(GUID).ToString());
             }
         }
 
@@ -52,8 +54,10 @@ namespace RedisDotnetSample
 
             for (int i = 0; i < count; i++)
             {
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
                 string GUID = Guid.NewGuid().ToString();
-                // Console.WriteLine(String.Format("Calling aync method {0}", i));
+                Console.WriteLine(String.Format("Calling aync method {0}", i));
                 RandomSetStringTask[i] = cache.StringSetAsync(GUID, LoremIpsum(20, 40, 2, 3, 3));
             }
             await Task.WhenAll(RandomSetStringTask);
@@ -66,7 +70,7 @@ namespace RedisDotnetSample
 
             // Fire-and-Forget
             string pageKey = "/catalog/49865/";
-            for (int i = 0; i < 500000; i++)
+            for (int i = 0; i < 500; i++)
             {
                 cache.StringIncrement(pageKey, flags: CommandFlags.FireAndForget);
                 Console.WriteLine("Page View +1");
@@ -76,20 +80,10 @@ namespace RedisDotnetSample
         async static Task Main(string[] args)
         {
 
-            // Test t = new Test();  
-            Thread[] tr = new Thread[4];
-
-            for (int i = 0; i < 4; i++)
-            {
-                tr[i] = new Thread(new ThreadStart(WriteDataToRedis));
-                tr[i].Name = String.Format("Working Thread: {0}", i);
-            }
-            //Start each thread  
-            foreach (Thread x in tr) { x.Start(); }
-            foreach (Thread x in tr) { x.Join(); }
+            WriteDataToRedis(100);
 
             // Async mode
-            for (int i = 0; i < 100000000; i++)
+            for (int i = 0; i < 100; i++)
             {
                 await WriteDataToRedisAysnc(5);
             }
@@ -97,6 +91,11 @@ namespace RedisDotnetSample
             IDatabase cache = RedisConnectorHelper.Connection.GetDatabase();
 
             FireAndForget();
+
+            // Decrement 
+            cache.StringSet("coffee", "90000");
+            for(int i = 0;i < 2000; i++) {cache.StringDecrement("coffee");}
+            Console.WriteLine(String.Format("coffee count is now {0}", cache.StringGet("coffee")));
 
             // Simple PING command
             string cacheCommand = "PING";
@@ -118,6 +117,13 @@ namespace RedisDotnetSample
             cache.HashSet("username:1122", "name", "Darren Lin");
             cache.HashSet("username:1122", "birthday", "2000/1/1");
             cache.HashSet("username:1122", "address", "Taipei City");
+
+            Dictionary<string, string> responseDict = cache.HashGetAll("username:1122").ToStringDictionary();
+
+            foreach (var item in responseDict)
+            {
+                Console.WriteLine($"{item.Key} : {item.Value}");
+            }
 
             // Set 
             cache.SetAdd("myset", "Red");
@@ -148,7 +154,7 @@ namespace RedisDotnetSample
             }
             catch (StackExchange.Redis.RedisServerException e)
             {
-                Console.WriteLine("Failed to do MGET on a Redis Cluster!");
+                Console.WriteLine("Failed to do MSET on a Redis Cluster!");
                 Console.WriteLine(e.ToString());
             }
             catch (System.Exception)
@@ -167,9 +173,11 @@ namespace RedisDotnetSample
             Console.WriteLine("\nCache command  : " + cacheCommand + " or StringGet()");
             Console.WriteLine("Cache response : " + cache.StringGet("Message").ToString());
 
-            for (int i = 0; i < 200; i++)
+
+            for (int i = 0; i < 500000; i++)
             {
                 cache.StringGet("Message", CommandFlags.PreferReplica);
+                // Thread.Sleep(1000);
                 if (i % 10 == 0) Console.WriteLine("Reading Message from Redis...");
             }
         }

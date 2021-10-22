@@ -1,1 +1,15 @@
 .env
+
+[Dd]ebug/
+[Rr]elease/
+x64/
+[Bb]in/
+[Oo]bj/
+
+# User-specific files
+*.suo
+*.user
+*.sln.docstates
+
+# Mac desktop service store files
+.DS_Store
