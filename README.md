@@ -104,6 +104,32 @@ In the example program, we used these data typess: String, SortSet, Hash, Set, L
 - Sets – an unordered collection of strings with the ability to intersect, union, and diff other Set types. Find the blog [8] for an example.
 - List: Remember more recent items that users view in a online retail shop; or communication between processes, using a consumer-producer pattern where the producer pushes items into a list, and a consumer (usually a worker) consumes those items and executed actions. 
 
+The example output is below: 
+```
+iphone:13:256G 400
+iphone:13:128G 200
+iphone:13:256G:plus 100
+name : Darren Lin
+birthday : 2000/1/1
+address : Taipei City
+
+Green
+Red
+Blue
+
+Orange
+Banana
+Apple
+Orange
+Banana
+Apple
+Orange
+Banana
+Apple
+Orange
+
+```
+
 ## 4. Supporting read from Replicas Nodes
 
 In the code section below, the redis client is reading the same key `"Message"`. By specifying the `CommandFlags.PreferReplica`, the client will prefer to read data from replica nodes if possible.  
