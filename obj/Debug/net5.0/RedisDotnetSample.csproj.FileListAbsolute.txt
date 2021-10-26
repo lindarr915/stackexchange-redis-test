@@ -27,7 +27,6 @@
 /home/ubuntu/redis-dotnet-sample/obj/Debug/net5.0/RedisDotnetSample.AssemblyInfoInputs.cache
 /home/ubuntu/redis-dotnet-sample/obj/Debug/net5.0/RedisDotnetSample.AssemblyInfo.cs
 /home/ubuntu/redis-dotnet-sample/obj/Debug/net5.0/RedisDotnetSample.csproj.CoreCompileInputs.cache
-/home/ubuntu/redis-dotnet-sample/obj/Debug/net5.0/RedisDotnetSample.csproj.CopyComplete
 /home/ubuntu/redis-dotnet-sample/obj/Debug/net5.0/RedisDotnetSample.dll
 /home/ubuntu/redis-dotnet-sample/obj/Debug/net5.0/ref/RedisDotnetSample.dll
 /home/ubuntu/redis-dotnet-sample/obj/Debug/net5.0/RedisDotnetSample.pdb

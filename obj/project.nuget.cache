@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "6Wyl3WCewK9zSe+3R2G13oVQlGPPcfqPyNk8BdODefYbIpbCw8TeeheJHClbVysf3Qf6+D92Wbmt3piXZvI+zA==",
+  "dgSpecHash": "pSgkFF2G3ul1GfyAUVnqo2176d5ChJ3NYU8q0pS9lKfgcBoHaQUVeS10OOLVyFPbwjGEYGaxwhOxqimYrKdsYA==",
   "success": true,
   "projectFilePath": "/home/ubuntu/redis-dotnet-sample/RedisDotnetSample.csproj",
   "expectedPackageFiles": [

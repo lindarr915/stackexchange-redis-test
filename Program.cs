@@ -42,8 +42,12 @@ namespace RedisDotnetSample
             for (int i = 0; i < count; i++)
             {
                 string GUID = Guid.NewGuid().ToString();
+                stopWatch.Start();
                 cache.StringSet(GUID, LoremIpsum(20, 40, 2, 3, 1));
                 Console.WriteLine("Key: " + GUID + ", Value: " + cache.StringGet(GUID).ToString());
+                stopWatch.Stop();
+                Console.WriteLine("Time Elapsed for 1 write and 1 read: " + stopWatch.ElapsedMilliseconds.ToString() + " ms");
+                stopWatch.Restart();
             }
         }
 
@@ -174,7 +178,7 @@ namespace RedisDotnetSample
             Console.WriteLine("Cache response : " + cache.StringGet("Message").ToString());
 
 
-            for (int i = 0; i < 500000; i++)
+            for (int i = 0; i < 50; i++)
             {
                 cache.StringGet("Message", CommandFlags.PreferReplica);
                 // Thread.Sleep(1000);
