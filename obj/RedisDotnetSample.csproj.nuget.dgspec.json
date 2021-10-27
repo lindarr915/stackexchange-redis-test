@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/ubuntu/redis-dotnet-sample/RedisDotnetSample.csproj": {}
+    "/home/ubuntu/redis-dotnet-console/redis-dotnet-sample/RedisDotnetSample.csproj": {}
   },
   "projects": {
-    "/home/ubuntu/redis-dotnet-sample/RedisDotnetSample.csproj": {
+    "/home/ubuntu/redis-dotnet-console/redis-dotnet-sample/RedisDotnetSample.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/ubuntu/redis-dotnet-sample/RedisDotnetSample.csproj",
+        "projectUniqueName": "/home/ubuntu/redis-dotnet-console/redis-dotnet-sample/RedisDotnetSample.csproj",
         "projectName": "RedisDotnetSample",
-        "projectPath": "/home/ubuntu/redis-dotnet-sample/RedisDotnetSample.csproj",
+        "projectPath": "/home/ubuntu/redis-dotnet-console/redis-dotnet-sample/RedisDotnetSample.csproj",
         "packagesPath": "/home/ubuntu/.nuget/packages/",
-        "outputPath": "/home/ubuntu/redis-dotnet-sample/obj/",
+        "outputPath": "/home/ubuntu/redis-dotnet-console/redis-dotnet-sample/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/ubuntu/.nuget/NuGet/NuGet.Config"
@@ -38,6 +38,18 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "OpenTelemetry": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            },
+            "OpenTelemetry.Exporter.Console": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            },
+            "OpenTelemetry.Instrumentation.StackExchangeRedis": {
+              "target": "Package",
+              "version": "[1.0.0-rc8, )"
+            },
             "StackExchange.Redis": {
               "target": "Package",
               "version": "[2.1.58, )"

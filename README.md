@@ -174,10 +174,43 @@ darren-demo.lm5w0w.clustercfg.usw2.cache.amazonaws.com:6379> MSET a b c d
 ## 6. Metrics to Monitor
 ## 7. Scaling
 
+- If the nodes in your cluster are under memory pressure, you might decide to scale out so that you have more resources to better store data and serve requests. You can determine whether your nodes are under memory pressure by monitoring the following metrics: FreeableMemory, SwapUsage, and BytesUseForCache. [9]
+- Also, If latency/throughput issues are plaguing your cluster, you might need to scale out to resolve the issues. You can monitor your latency and throughput levels by monitoring the following metrics: CPUUtilization, NetworkBytesIn, NetworkBytesOut, CurrConnections, and NewConnections.
+- ElastiCache for Redis 6.0+ and Large, XLarge, 2XLarge supports Auto Scaling. ElastiCache for Redis supports scaling for Shards and Replicas. [10]
+
+## 8. Multiple Clients
+
+If `STRESS_MODE` environment variable being `true`, the progam will run in stress mode to write data to ElastiCache.
+
+- Run 10 clients, you can scale out ElastiCache cluster online. 
+- The request per minute per node can reach 170,000. 
+- Scaling out the ElastiCache cluster takes time. If the speed of data growth too fast, you will still get OOM error even after you scale out.   
+
+```
+for (int i = 0; i < 100; i++) WriteDataToRedis(500000);
+for (int i = 0; i < 10000; i++) await WriteDataToRedisAysnc(30);
+```
+
+- (TODO: Stress test in Windows)
+
+## 9. Async Programming
+
+StackExchange.Redis supports asynchronous API, so that you can take advantage of multi-threading instead of managing threads and locks on your own. The method `WriteDataToRedisAysnc` showed how to do async programming using `StringSetAsync` method and `WhenAll` method to continue when all of the write tasks are completed.
+
+## 10. Fire and Forget 
+
+The fire-and-forget usage is accessed by the optional CommandFlags flags parameter on all methods (defaults to none). In this usage, the method returns the default value immediately.
+
+A typical use-case of this might be to increment page-view counts.
+
+## 11. ElastiCache for Redis Cluster Mode Enabled
+
+You can refer to the AWS CDK in /cdk to create ElastiCache Redis Cluster. 
+
 ## Future Works
 
 [ ] - Record and latency to ElastiCache cluster and export them as Prometheus metrics 
-[ ] - IaC code to launch ElastiCache cluster, and EC2 clients.
+[ ] - IaC code to launch ElastiCache cluster, and ElasticBeanstalk EC2 clients.
 
 ## References
 
@@ -189,3 +222,5 @@ darren-demo.lm5w0w.clustercfg.usw2.cache.amazonaws.com:6379> MSET a b c d
 6. Pipelines and Multiplexers - https://stackexchange.github.io/StackExchange.Redis/PipelinesMultiplexers
 7. https://github.com/StackExchange/StackExchange.Redis/blob/f0e485daa85e5bc2dfc1ff7eebb77c4d6a072696/src/StackExchange.Redis/ServerEndPoint.cs#L381
 8. https://medium.com/analytics-vidhya/the-most-important-redis-data-structures-you-must-understand-2e95b5cf2bce
+9.
+10. Auto Scaling ElastiCache for Redis clusters - https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/AutoScaling.html

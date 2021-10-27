@@ -7,6 +7,8 @@ using System.Text;
 using System.Collections.Generic;
 using System.IO;
 using System.Diagnostics;
+using OpenTelemetry.Trace;
+using OpenTelemetry;
 
 namespace RedisDotnetSample
 {
@@ -14,11 +16,17 @@ namespace RedisDotnetSample
     {
         static private string cacheConnection = System.Environment.GetEnvironmentVariable("REDIS_ENDPOINT");
 
+
         static RedisConnectorHelper()
         {
             RedisConnectorHelper._connection = new Lazy<ConnectionMultiplexer>(() =>
             {
-                return ConnectionMultiplexer.Connect(cacheConnection);
+                var connection = ConnectionMultiplexer.Connect(cacheConnection);
+                // var tracerProvider = Sdk.CreateTracerProviderBuilder()
+                //     .AddRedisInstrumentation(connection,options => options.SetVerboseDatabaseStatements = true)
+                //     .AddConsoleExporter()
+                //     .Build();
+                return connection;
             });
         }
 
@@ -34,6 +42,7 @@ namespace RedisDotnetSample
     }
     class Program
     {
+        static private bool stressMode = System.Environment.GetEnvironmentVariable("STRESS_MODE") == "ON";
         static void WriteDataToRedis(int count)
         {
             IDatabase cache = RedisConnectorHelper.Connection.GetDatabase();
@@ -58,8 +67,8 @@ namespace RedisDotnetSample
 
             for (int i = 0; i < count; i++)
             {
-                Stopwatch stopWatch = new Stopwatch();
-                stopWatch.Start();
+                // Stopwatch stopWatch = new Stopwatch();
+                // stopWatch.Start();
                 string GUID = Guid.NewGuid().ToString();
                 Console.WriteLine(String.Format("Calling aync method {0}", i));
                 RandomSetStringTask[i] = cache.StringSetAsync(GUID, LoremIpsum(20, 40, 2, 3, 3));
@@ -84,7 +93,17 @@ namespace RedisDotnetSample
         async static Task Main(string[] args)
         {
 
+
             WriteDataToRedis(100);
+
+            if (stressMode == true)
+            {
+                for (int i = 0; i < 100; i++) WriteDataToRedis(500000);
+                for (int i = 0; i < 10000; i++) await WriteDataToRedisAysnc(30);
+
+            }
+
+            Parallel.For(1, 10, i => WriteDataToRedis(100));
 
             // Async mode
             for (int i = 0; i < 100; i++)
@@ -98,7 +117,7 @@ namespace RedisDotnetSample
 
             // Decrement 
             cache.StringSet("coffee", "90000");
-            for(int i = 0;i < 2000; i++) {cache.StringDecrement("coffee");}
+            for (int i = 0; i < 2000; i++) { cache.StringDecrement("coffee"); }
             Console.WriteLine(String.Format("coffee count is now {0}", cache.StringGet("coffee")));
 
             // Simple PING command

@@ -11,7 +11,8 @@
             "stopAtEntry": false,
             "console": "internalConsole",
             "env": {
-                "REDIS_ENDPOINT": "darren-demo.lm5w0w.clustercfg.usw2.cache.amazonaws.com:6379"
+                "REDIS_ENDPOINT": "darren-demo.lm5w0w.clustercfg.usw2.cache.amazonaws.com:6379",
+                // "STRESS_MODE": "ON"
             }
         },
         {

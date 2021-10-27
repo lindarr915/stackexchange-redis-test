@@ -1,8 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
+
 metadata:
   name: redis-test
+  namespace: dotnet-sample
 spec:
+  replicas: 10
   selector:
     matchLabels:
       app: redis-test
@@ -15,8 +18,10 @@ spec:
       - name: redis-test
         env:
         - name: REDIS_ENDPOINT
-          value: darren-demo.lm5w0w.clustercfg.usw2.cache.amazonaws.com
-        image: 091550601287.dkr.ecr.us-west-2.amazonaws.com/redis-client
+          value: cdm9m8ue6l9kg5n.lm5w0w.clustercfg.usw2.cache.amazonaws.com
+        - name: STRESS_MODE
+          value: "false"
+        image: darrenlin915/redisdotnetsample
         resources:
           limits:
             memory: "128Mi"

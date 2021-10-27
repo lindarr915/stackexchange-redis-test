@@ -4,7 +4,7 @@ metadata:
   name: stackexchange-redis-test
 build:
   artifacts:
-  - image: 091550601287.dkr.ecr.us-west-2.amazonaws.com/redis-client
+  - image: darrenlin915/redisdotnetsample
     docker:
       dockerfile: Dockerfile
 deploy:
