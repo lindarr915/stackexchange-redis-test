@@ -9,6 +9,7 @@ using System.IO;
 using System.Diagnostics;
 using OpenTelemetry.Trace;
 using OpenTelemetry;
+using OpenTelemetry.Contrib.Extensions.AWSXRay.Trace;
 
 namespace RedisDotnetSample
 {
@@ -22,10 +23,12 @@ namespace RedisDotnetSample
             RedisConnectorHelper._connection = new Lazy<ConnectionMultiplexer>(() =>
             {
                 var connection = ConnectionMultiplexer.Connect(cacheConnection);
-                // var tracerProvider = Sdk.CreateTracerProviderBuilder()
-                //     .AddRedisInstrumentation(connection,options => options.SetVerboseDatabaseStatements = true)
-                //     .AddConsoleExporter()
-                //     .Build();
+                var tracerProvider = Sdk.CreateTracerProviderBuilder()
+                    .AddXRayTraceId()
+                    .AddOtlpExporter()
+                    .AddAWSInstrumentation()
+                    .AddRedisInstrumentation(connection,options => options.SetVerboseDatabaseStatements = true)
+                    .Build();
                 return connection;
             });
         }

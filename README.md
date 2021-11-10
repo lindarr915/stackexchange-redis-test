@@ -199,7 +199,7 @@ The following CloudWatch metrics offer good insight into ElastiCache performance
 If `STRESS_MODE` environment variable being `true`, the progam will run in stress mode to write data to ElastiCache.
 
 - Run 10 clients, you can scale out ElastiCache cluster online. 
-- The request per minute per node can reach 170,000. 
+- The request per minute per node can reach 170,000 with cache.r6.large with 3 node groups and 2 replicas per node group. 
 - Scaling out the ElastiCache cluster takes time. If the speed of data growth too fast, you will still get OOM error even after you scale out.   
 
 ```
