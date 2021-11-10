@@ -191,8 +191,6 @@ for (int i = 0; i < 100; i++) WriteDataToRedis(500000);
 for (int i = 0; i < 10000; i++) await WriteDataToRedisAysnc(30);
 ```
 
-- (TODO: Stress test in Windows)
-
 ## 9. Async Programming
 
 StackExchange.Redis supports asynchronous API, so that you can take advantage of multi-threading instead of managing threads and locks on your own. The method `WriteDataToRedisAysnc` showed how to do async programming using `StringSetAsync` method and `WhenAll` method to continue when all of the write tasks are completed.
