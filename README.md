@@ -172,6 +172,22 @@ darren-demo.lm5w0w.clustercfg.usw2.cache.amazonaws.com:6379> MSET a b c d
 ```
 
 ## 6. Metrics to Monitor
+
+[] Metrics for Redis - https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/CacheMetrics.Redis.html
+[] Which Metrics Should I Monitor? - https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/CacheMetrics.WhichShouldIMonitor.html
+
+The following CloudWatch metrics offer good insight into ElastiCache performance. In most cases, we recommend that you set CloudWatch alarms for these metrics so that you can take corrective action before performance issues occur.
+
+- CPUUtilization
+- EngineCPUUtilization
+- SwapUsage
+- Evictions
+- CurrConnections
+- Memory
+- Network
+- Latency
+- Replication
+
 ## 7. Scaling
 
 - If the nodes in your cluster are under memory pressure, you might decide to scale out so that you have more resources to better store data and serve requests. You can determine whether your nodes are under memory pressure by monitoring the following metrics: FreeableMemory, SwapUsage, and BytesUseForCache. [9]
