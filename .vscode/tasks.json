@@ -16,7 +16,10 @@
             "presentation": {
                 "reveal": "silent"
             },
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "options": {
+                "cwd": "./src"
+            }
         },
         {
             "type": "docker-build",
@@ -32,7 +35,7 @@
                 "pull": true
             },
             "netCore": {
-                "appProject": "${workspaceFolder}/RedisDotnetSample.csproj"
+                "appProject": "${workspaceFolder}/src/RedisDotnetSample.csproj"
             }
         },
         {
@@ -49,6 +52,9 @@
             },
             "netCore": {
                 "appProject": "${workspaceFolder}/RedisDotnetSample.csproj"
+            },
+            "options": {
+                "cwd": "./src"
             }
         },
         {
@@ -61,6 +67,9 @@
             "netCore": {
                 "appProject": "${workspaceFolder}/RedisDotnetSample.csproj",
                 "enableDebugging": true
+            },
+            "options": {
+                "cwd": "./src"
             }
         },
         {
@@ -72,6 +81,9 @@
             "dockerRun": {},
             "netCore": {
                 "appProject": "${workspaceFolder}/RedisDotnetSample.csproj"
+            },
+            "options": {
+                "cwd": "./src" 
             }
         }
     ]
