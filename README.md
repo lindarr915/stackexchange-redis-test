@@ -196,16 +196,20 @@ The following CloudWatch metrics offer good insight into ElastiCache performance
 
 ## 8. Multiple Clients
 
-If `STRESS_MODE` environment variable being `true`, the progam will run in stress mode to write data to ElastiCache.
+If `STRESS_MODE` environment variable being `ON`, the progam will run in stress mode to write data to ElastiCache.
 
-- Run 10 clients, you can scale out ElastiCache cluster online. 
-- The request per minute per node can reach 170,000 with cache.r6.large with 3 node groups and 2 replicas per node group. 
-- Scaling out the ElastiCache cluster takes time. If the speed of data growth too fast, you will still get OOM error even after you scale out.   
+- When running 15 clients. The request per minute per node can reach "220,000 writes" + "110,000 x 2 reads" with cache.r6.large with 3 node groups, and 1 primary + 2 replicas per node group. This is not the maximum or extreme performance 
+- You can scale out ElastiCache cluster online. Scaling out the ElastiCache cluster takes time. If the speed of data growth too fast, you will still get OOM error even after you scale out. 
 
 ```
-for (int i = 0; i < 100; i++) WriteDataToRedis(500000);
-for (int i = 0; i < 10000; i++) await WriteDataToRedisAysnc(30);
+for (int i = 0;; i++) WriteDataToRedis(500000);
 ```
+
+From the screenshots below, you will be able to find the metrics `BytesUsedForCache` and `DatabaseMemoryUsagePercentage` changes after data are being moved to other shards.
+
+![](images/autoscaling-with-shards.png)
+![](images/database-memory-usage.png)
+
 
 ## 9. Async Programming
 

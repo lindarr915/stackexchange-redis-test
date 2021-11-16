@@ -9,7 +9,9 @@ using System.IO;
 using System.Diagnostics;
 using OpenTelemetry.Trace;
 using OpenTelemetry;
+using OpenTelemetry.Resources;
 using OpenTelemetry.Contrib.Extensions.AWSXRay.Trace;
+using System.Net;
 
 namespace RedisDotnetSample
 {
@@ -22,11 +24,11 @@ namespace RedisDotnetSample
         {
             RedisConnectorHelper._connection = new Lazy<ConnectionMultiplexer>(() =>
             {
-                var connection = ConnectionMultiplexer.Connect(cacheConnection);
+                var connection = ConnectionMultiplexer.Connect(cacheConnection + ",allowAdmin=true");
                 var tracerProvider = Sdk.CreateTracerProviderBuilder()
-                    .AddXRayTraceId()
-                    .AddOtlpExporter()
-                    .AddAWSInstrumentation()
+                    // .AddXRayTraceId()
+                    // .AddConsoleExporter()
+                    // .AddAWSInstrumentation()
                     .AddRedisInstrumentation(connection,options => options.SetVerboseDatabaseStatements = true)
                     .Build();
                 return connection;
@@ -45,7 +47,20 @@ namespace RedisDotnetSample
     }
     class Program
     {
+        static private bool dbFlush = System.Environment.GetEnvironmentVariable("DBFLUSH") == "TRUE";
         static private bool stressMode = System.Environment.GetEnvironmentVariable("STRESS_MODE") == "ON";
+
+        static void FlushDatabase(){
+            System.Net.EndPoint[] endpoints = RedisConnectorHelper.Connection.GetEndPoints();
+            foreach (EndPoint e in endpoints){
+                var server = RedisConnectorHelper.Connection.GetServer(e);
+                if (! server.IsReplica) server.FlushDatabase();
+
+            }
+
+        }
+
+
         static void WriteDataToRedis(int count)
         {
             IDatabase cache = RedisConnectorHelper.Connection.GetDatabase();
@@ -56,7 +71,7 @@ namespace RedisDotnetSample
                 string GUID = Guid.NewGuid().ToString();
                 stopWatch.Start();
                 cache.StringSet(GUID, LoremIpsum(20, 40, 2, 3, 1));
-                Console.WriteLine("Key: " + GUID + ", Value: " + cache.StringGet(GUID).ToString());
+                Console.WriteLine("Key: " + GUID + ", Value: " + cache.StringGet(GUID, CommandFlags.PreferReplica).ToString());
                 stopWatch.Stop();
                 Console.WriteLine("Time Elapsed for 1 write and 1 read: " + stopWatch.ElapsedMilliseconds.ToString() + " ms");
                 stopWatch.Restart();
@@ -95,15 +110,13 @@ namespace RedisDotnetSample
 
         async static Task Main(string[] args)
         {
-
+            // FlushDatabase();
 
             WriteDataToRedis(100);
 
-            if (stressMode == true)
+            if (stressMode)
             {
-                for (int i = 0; i < 100; i++) WriteDataToRedis(500000);
-                for (int i = 0; i < 10000; i++) await WriteDataToRedisAysnc(30);
-
+                for (int i = 0;; i++) WriteDataToRedis(10000);
             }
 
             Parallel.For(1, 10, i => WriteDataToRedis(100));
@@ -206,6 +219,7 @@ namespace RedisDotnetSample
                 // Thread.Sleep(1000);
                 if (i % 10 == 0) Console.WriteLine("Reading Message from Redis...");
             }
+
         }
 
 

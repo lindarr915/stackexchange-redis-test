@@ -6,15 +6,7 @@
     "configurations": [
         
         
-        {
-            "name": "Docker .NET Core Attach (Preview)",
-            "type": "docker",
-            "request": "attach",
-            "platform": "netCore",
-            "sourceFileMap": {
-                "/src": "${workspaceFolder}"
-            }
-        },
+
         {
             "name": ".NET Core Launch (console)",
             "type": "coreclr",
@@ -27,13 +19,22 @@
             "stopAtEntry": false,
             "env": {
                 "REDIS_ENDPOINT": "darren-demo.lm5w0w.clustercfg.usw2.cache.amazonaws.com:6379",
-                // "STRESS_MODE": "ON"
+                "STRESS_MODE": "ON"
             }
         },
         {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach"
-        }
+        },
+        {
+            "name": "Docker .NET Core Attach (Preview)",
+            "type": "docker",
+            "request": "attach",
+            "platform": "netCore",
+            "sourceFileMap": {
+                "/src": "${workspaceFolder}"
+            }
+        },
     ]
 }

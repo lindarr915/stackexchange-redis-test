@@ -1,0 +1,14 @@
+apiVersion: skaffold/v2beta25
+kind: Config
+metadata:
+  name: stackexchange-redis-test
+build:
+  artifacts:
+  - image: darrenlin915/redisdotnetsample
+    context: src
+    docker:
+      dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+    - deploy/kubernetes/app.yaml
