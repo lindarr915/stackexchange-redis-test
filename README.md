@@ -84,7 +84,7 @@ f563001ebaf7635839b8589d3096f85f746386ca 172.31.9.246:6379@1122 slave 99548c9dda
 
 ➜  git:(main) ✗ redis-cli -h 172.31.12.247 GET 3a94283b-49e8-4481-94e5-b75eeb0caa89
 
-"---erat magna euismod tincidunt euismod adipiscing elit adipiscing aliquam magna diam erat ut sed nibh tincidunt aliquam ut erat magna adipiscing sed dolor aliquam diam aliquam nibh dolore. tincidunt consectetuer euismod nonummy lorem diam ut nonummy adipiscing dolor tincidunt dolor consectetuer consectetuer dolore sit sed nibh ipsum amet nonummy nibh tincidunt erat ut elit lorem nonummy. laoreet ut amet ut laoreet nibh euismod tincidunt consectetuer aliquam aliquam consectetuer ut lorem adipiscing laoreet lorem dolore nibh ipsum nibh aliquam diam magna dolore adipiscing consectetuer dolor. ---"
+"---erat magna euismod tincidunt euismod adipiscing elit adipiscing aliquam ---"
 ➜  git:(main) ✗ redis-cli -h 172.31.40.201 GET 3a94283b-49e8-4481-94e5-b75eeb0caa89
 
 (error) MOVED 4529 172.31.12.247:6379
@@ -196,24 +196,65 @@ The following CloudWatch metrics offer good insight into ElastiCache performance
 
 ## 8. Multiple Clients
 
-If `STRESS_MODE` environment variable being `ON`, the progam will run in stress mode to write data to ElastiCache.
+If `STRESS_MODE` environment variable being `ON`, the progam will run in stress mode to write data to ElastiCache. In each invocation of `WriteDataToRedis`, the client will write one random string key and data to Redis and read it again. `Stopwatch` objects can be used for measuring the time elapsed for PoC purpose, and for production purpsose OpenTelemetry can be used to send trace data to AWS X-Ray or other tracing services. Adding OpenTelemetry in the project will be future work. [11]
 
-- When running 15 clients. The request per minute per node can reach "220,000 writes" + "110,000 x 2 reads" with cache.r6.large with 3 node groups, and 1 primary + 2 replicas per node group. This is not the maximum or extreme performance 
+```
+static void WriteDataToRedis(int count)
+{
+    IDatabase cache = RedisConnectorHelper.Connection.GetDatabase();
+    Stopwatch stopWatch = new Stopwatch();
+    for (int i = 0; i < count; i++)
+    {
+        string GUID = Guid.NewGuid().ToString();
+        stopWatch.Start();
+        cache.StringSet(GUID, LoremIpsum(20, 40, 2, 3, 1));
+        Console.WriteLine("Key: " + GUID + ", Value: " + cache.StringGet(GUID, CommandFlags.PreferReplica).ToString());
+        stopWatch.Stop();
+        Console.WriteLine("Time Elapsed for 1 write and 1 read: " + stopWatch.ElapsedMilliseconds.ToString() + " ms");
+        stopWatch.Restart();
+    }
+}
+```
+[11] https://github.com/open-telemetry/opentelemetry-dotnet/blob/main/src/OpenTelemetry.Instrumentation.StackExchangeRedis/README.md
+
+- When running 15 clients in `STRESS` mode `ON`, The request per minute per node can reach "220,000 writes/min" for each primary node, and "110,000 reads/min" for each replica node. There are 2 replicas node so reading workload are shared. 
+- The cache type is cache.r6g.large with 3 nodegroups (shards), and 1 primary + 2 replicas per node group (aka shard). This is not the maximum or extreme performance.
 - You can scale out ElastiCache cluster online. Scaling out the ElastiCache cluster takes time. If the speed of data growth too fast, you will still get OOM error even after you scale out. 
 
-```
-for (int i = 0;; i++) WriteDataToRedis(500000);
-```
+ElastiCache for Redis Auto Scaling is limited to the following:
+
+- Redis (cluster mode enabled) clusters running Redis engine version 6.x onwards
+- Instance type families - R5, R6g, M5, M6g
+- Instance sizes - Large, XLarge, 2XLarge
+- Not supported for clusters running in Global datastores, Outposts or Local Zones.
 
 From the screenshots below, you will be able to find the metrics `BytesUsedForCache` and `DatabaseMemoryUsagePercentage` changes after data are being moved to other shards.
 
+CloudWatch Metrics 
+![](images/elasticache-dash.png)
+
+ElastiCache Scaling Events
 ![](images/autoscaling-with-shards.png)
-![](images/database-memory-usage.png)
 
+CPU Utilization
+![](images/elastic-redis-cpuutilization.png)
 
-## 9. Async Programming
+```
+# Before Scaling Out to Additional Shard
+root@ubuntu-787f7d6d7c-trp9f:/data# redis-cli -h 192.168.97.250 GET $KEY
+"---sit laoreet lorem lorem lorem lorem consectetuer elit..."
+# After Scaling Out to Additional Shard
+root@ubuntu-787f7d6d7c-trp9f:/data# redis-cli -h 192.168.97.250 GET $KEY
+(error) MOVED 15210 192.168.98.89:6379
+root@ubuntu-787f7d6d7c-trp9f:/data# redis-cli -h 192.168.98.89 GET $KEY
+"---sit laoreet lorem lorem lorem lorem consectetuer elit..."
+```
+
+## 9. Async Programming and Parallel Tasks
 
 StackExchange.Redis supports asynchronous API, so that you can take advantage of multi-threading instead of managing threads and locks on your own. The method `WriteDataToRedisAysnc` showed how to do async programming using `StringSetAsync` method and `WhenAll` method to continue when all of the write tasks are completed.
+
+On the other hand, you can take advantage of 10 parallel tasks by invoking `Parallel.For(1, 10, i => WriteDataToRedis(100))` so that .NET will manage the threads for you.
 
 ## 10. Fire and Forget 
 
@@ -221,14 +262,20 @@ The fire-and-forget usage is accessed by the optional CommandFlags flags paramet
 
 A typical use-case of this might be to increment page-view counts.
 
-## 11. ElastiCache for Redis Cluster Mode Enabled
+## 11. Check and Set (CAS)
 
-You can refer to the AWS CDK in /cdk to create ElastiCache Redis Cluster. 
+- I haven't done coding for CAS related features in ElastiCache Redis. References are below:  
+https://redis.io/topics/transactions
+https://stackexchange.github.io/StackExchange.Redis/Transactions
+
+## 12. ElastiCache for Redis Cluster Mode Enabled
+
+You can refer to the AWS CDK in /deploy/cdk to create ElastiCache Redis Cluster. 
 
 ## Future Works
 
 [ ] - Record and latency to ElastiCache cluster and export them as Prometheus metrics 
-[ ] - IaC code to launch ElastiCache cluster, and ElasticBeanstalk EC2 clients.
+[ ] - IaC code to launch Windows instances.
 
 ## References
 

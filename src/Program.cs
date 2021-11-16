@@ -60,7 +60,6 @@ namespace RedisDotnetSample
 
         }
 
-
         static void WriteDataToRedis(int count)
         {
             IDatabase cache = RedisConnectorHelper.Connection.GetDatabase();
@@ -110,15 +109,14 @@ namespace RedisDotnetSample
 
         async static Task Main(string[] args)
         {
-            // FlushDatabase();
+            if (dbFlush) FlushDatabase();
 
             WriteDataToRedis(100);
 
-            if (stressMode)
-            {
+            if (stressMode){
                 for (int i = 0;; i++) WriteDataToRedis(10000);
             }
-
+             
             Parallel.For(1, 10, i => WriteDataToRedis(100));
 
             // Async mode
