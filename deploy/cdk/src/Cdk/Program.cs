@@ -9,11 +9,8 @@ namespace Cdk
     {
         public static void Main(string[] args)
         {
-
-         
-                
             var app = new App();
-            
+
             new ElastiCacheRedisCluster(app, "ElastiCacheRedisCluster", new StackProps
             {
                 Env = new Amazon.CDK.Environment
@@ -24,6 +21,15 @@ namespace Cdk
             }
             );
 
+            new AuroraDatabaseCluster(app, "MyAuroraDatabaseCluster", new StackProps
+            {
+                Env = new Amazon.CDK.Environment
+                {
+                    Account = "091550601287",
+                    Region = "us-west-2",
+                }
+            }
+            );
             app.Synth();
         }
     }

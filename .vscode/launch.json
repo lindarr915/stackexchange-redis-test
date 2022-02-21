@@ -5,21 +5,23 @@
     "version": "0.2.0",
     "configurations": [
         
-        
-
         {
             "name": ".NET Core Launch (console)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/bin/Debug/net5.0/RedisDotnetSample.dll",
+            //src/redis-client/bin/Debug/net5.0/RedisDotnetSample.dll
+            "program": "${workspaceFolder}/src/redis-client/bin/Debug/net5.0/RedisDotnetSample.dll",
+            // "program": "${workspaceFolder}/src/pgsql-client/bin/Debug/net6.0/pgsql-client",
             "args": [],
-            "cwd": "${workspaceFolder}/src",
+            "cwd": "${workspaceFolder}/src/pgsql-client",
             "console": "internalConsole",
             "stopAtEntry": false,
             "env": {
                 "REDIS_ENDPOINT": "darren-demo.lm5w0w.clustercfg.usw2.cache.amazonaws.com:6379",
-                "STRESS_MODE": "ON"
+                "STRESS_MODE": "ON",
+                "DB_PASSWORD": "Uudaew2eiyua8thei2wo",
+                "DB_ENDPOINT": "database-1.cluster-cyeqog6cufmf.us-west-2.rds.amazonaws.com"
             }
         },
         {

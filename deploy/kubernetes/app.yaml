@@ -5,7 +5,7 @@ metadata:
   name: redis-test
   namespace: dotnet-sample
 spec:
-  replicas: 15
+  replicas: 1
   selector:
     matchLabels:
       app: redis-test
@@ -20,7 +20,9 @@ spec:
         - name: REDIS_ENDPOINT
           value: cdm9m8ue6l9kg5n.lm5w0w.clustercfg.usw2.cache.amazonaws.com
         - name: STRESS_MODE
-          value: "ON"
+          value: "OFF"
+        - name: DBFLUSH
+          value: "FALSE"
         image: darrenlin915/redisdotnetsample
         resources:
           requests:

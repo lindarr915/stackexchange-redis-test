@@ -15,3 +15,6 @@ x64/
 
 # Mac desktop service store files
 .DS_Store
+.vscode/launch.json
+.vscode/launch.json
+hack/test.sh
