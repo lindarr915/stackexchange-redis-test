@@ -1,7 +1,7 @@
-apiVersion: skaffold/v2beta23
+apiVersion: skaffold/v2beta27
 kind: Config
 metadata:
-  name: stackexchange-redis-test
+  name: redis-client
 build:
   artifacts:
   - image: darrenlin915/redisdotnetsample
@@ -10,4 +10,4 @@ build:
 deploy:
   kubectl:
     manifests:
-    - deploy/kubernetes/app.yaml
+    - app.yaml

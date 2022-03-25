@@ -272,6 +272,22 @@ https://stackexchange.github.io/StackExchange.Redis/Transactions
 
 You can refer to the AWS CDK in /deploy/cdk to create ElastiCache Redis Cluster. 
 
+## 13. Consideration for clinets connecting to ElastiCache Clsuter Mode 
+
+1. Ensure the Redis Client you are using suppport cluster node, and being enabled. For redis cli, use `-c` to use cluster mode. 
+2. Redis Cluster does not support multiple databases like the standalone version of Redis. We only support database 0; the SELECT command is not allowed.
+3. Commands performing complex multi-key operations like set unions and intersections are implemented for cases where all of the keys involved in the operation hash to the same slot. In other words, commands `MGET` `MSET` will fail if keys are in different slot. 
+4. Using hash tags, clients are free to use multi-key operations. However, Multi-key operations may become unavailable when a resharding of the hash slot the keys belong to is in progress.
+5. Reading from Replica Nodes - mentioned earlier in #4 
+
+[1] https://redis.io/topics/cluster-spec
+[2] https://aws.amazon.com/blogs/database/best-practices-redis-clients-and-amazon-elasticache-for-redis/
+
+
+## 14. Open Source tools to live migration from/to Redis-compatible Cache? 
+
+Please refer to: https://github.com/redis-developer/riot
+
 ## Future Works
 
 [ ] - Record and latency to ElastiCache cluster and export them as Prometheus metrics 

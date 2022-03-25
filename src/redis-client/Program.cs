@@ -44,9 +44,11 @@ namespace RedisDotnetSample
         static private TracerProvider tracerProvider = Sdk.CreateTracerProviderBuilder()
                     .AddXRayTraceId()
                     .AddEntityFrameworkCoreInstrumentation()
-                    .AddOtlpExporter()
                     .AddAWSInstrumentation()
-                    .AddRedisInstrumentation(RedisConnectorHelper.Connection, options => options.SetVerboseDatabaseStatements = true)
+                    .AddRedisInstrumentation(
+                            RedisConnectorHelper.Connection, 
+                            options => options.SetVerboseDatabaseStatements = true)
+                    .AddOtlpExporter()
                     .Build();
 
         static void FlushDatabase()
@@ -63,7 +65,7 @@ namespace RedisDotnetSample
 
         private static void SubscribeMessage()
         {
-            var channel = RedisConnectorHelper.Connection.GetSubscriber().Subscribe("__keyspace@0__*");
+            var channel = RedisConnectorHelper.Connection.GetSubscriber().Subscribe("__keyspace@0__*",CommandFlags.DemandReplica);
             channel.OnMessage(message =>
             {
                 Console.WriteLine((string) message.Channel + " " + (string)message.Message);
@@ -78,10 +80,10 @@ namespace RedisDotnetSample
             for (int i = 0; i < count; i++)
             {
                 string GUID = Guid.NewGuid().ToString();
-                stopWatch.Start();
+                // stopWatch.Start();
                 cache.StringSet(GUID, LoremIpsum(20, 40, 2, 3, 1));
-                Console.WriteLine("Key: " + GUID + ", Value: " + cache.StringGet(GUID, CommandFlags.PreferReplica).ToString());
-                stopWatch.Stop();
+                // Console.WriteLine("Key: " + GUID + ", Value: " + cache.StringGet(GUID, CommandFlags.PreferReplica).ToString());
+                // stopWatch.Stop();
                 // Console.WriteLine("Time Elapsed for 1 write and 1 read: " + stopWatch.ElapsedMilliseconds.ToString() + " ms");
                 stopWatch.Restart();
             }
@@ -98,7 +100,7 @@ namespace RedisDotnetSample
                 // stopWatch.Start();
                 string GUID = Guid.NewGuid().ToString();
                 Console.WriteLine(String.Format("Calling aync method {0}", i));
-                RandomSetStringTask[i] = cache.StringSetAsync(GUID, LoremIpsum(20, 40, 2, 3, 3));
+                RandomSetStringTask[i] = cache.StringSetAsync(GUID, LoremIpsum(20, 40, 2, 3, 3), null, When.Always, CommandFlags.PreferReplica);
             }
             await Task.WhenAll(RandomSetStringTask);
             return;

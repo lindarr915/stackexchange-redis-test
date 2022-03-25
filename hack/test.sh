@@ -1,7 +1,8 @@
 export REDIS_ENDPOINT=darren-demo.lm5w0w.clustercfg.usw2.cache.amazonaws.com 
 export REDIS_ENDPOINT=darren-demo.lm5w0w.clustercfg.usw2.cache.amazonaws.com:6379
 
-
+redis-cli -h $REDIS_ENDPOINT PUBLISH ABC DEF
+redis-cli -h $REDIS_ENDPOINT SUBSCRIBE ABC
 redis-cli -h $REDIS_ENDPOINT CLUSTER NODES
 redis-cli -h 172.31.45.8 MONITOR
 redis-cli -h $REDIS_ENDPOINT CLIENT LIST
@@ -12,7 +13,8 @@ docker compose up
 run -e REDIS_ENDPOINT=darren-demo.lm5w0w.clustercfg.usw2.cache.amazonaws.com:6379
 k -n default exec -it ubuntu-787f7d6d7c-trp9f -- /bin/bash
 
-redis-cli -h $REDIS_ENDPOINT CLUSTER KEYSLOT $KEY
+redis-cli -h $REDIS_ENDPOINT CLUSTER NODES
+ $KEY
 redis-cli -h $REDIS_ENDPOINT CLUSTER GETKEYSINSLOT 15200 3
 
 redis-cli -h 172.31.12.247 GET 
@@ -24,6 +26,8 @@ redis-cli -h 192.168.98.89 KEYS
 REDIS_ENDPOINT=cdm9m8ue6l9kg5n.lm5w0w.clustercfg.usw2.cache.amazonaws.com
 KEY=001ba8a0-df21-40f4-88c0-73a0bcc496d7
 
+
+redis-cli -h 172.31.41.207 LRANGE mylist 0 1 
 
 redis-cli -h 192.168.97.250 GET $KEY
 redis-cli -h 192.168.98.89 GET $KEY

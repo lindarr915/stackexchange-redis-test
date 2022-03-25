@@ -5,7 +5,7 @@ metadata:
   name: redis-test
   namespace: dotnet-sample
 spec:
-  replicas: 1
+  replicas: 20
   selector:
     matchLabels:
       app: redis-test
@@ -14,15 +14,18 @@ spec:
       labels:
         app: redis-test
     spec:
+      serviceAccount: xray
       containers:
       - name: redis-test
         env:
         - name: REDIS_ENDPOINT
-          value: elmf64cf90nuki7.lm5w0w.clustercfg.usw2.cache.amazonaws.com:6379
+          value: elmf64cf90nuki7.lm5w0w.clustercfg.usw2.cache.amazonaws.com
         - name: STRESS_MODE
-          value: "OFF"
+          value: "ON"
         - name: DBFLUSH
           value: "FALSE"
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: "service.namespace=AWSObservability,service.name=RedisWriteService"
         image: darrenlin915/redisdotnetsample
         resources:
           requests:
@@ -33,4 +36,16 @@ spec:
             memory: "1024Mi"
         # ports:
         # - containerPort: <Port>
-
+      - name: adot-collector
+        image: public.ecr.aws/aws-observability/aws-otel-collector:latest
+        env:
+          - name: AWS_REGION
+            value: "us-west-2"
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "2"
+            memory: "1024Mi"
+        

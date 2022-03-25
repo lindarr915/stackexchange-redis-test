@@ -19,9 +19,9 @@
             "stopAtEntry": false,
             "env": {
                 "REDIS_ENDPOINT": "darren-demo.lm5w0w.clustercfg.usw2.cache.amazonaws.com:6379",
-                "STRESS_MODE": "ON",
-                "DB_PASSWORD": "Uudaew2eiyua8thei2wo",
-                "DB_ENDPOINT": "database-1.cluster-cyeqog6cufmf.us-west-2.rds.amazonaws.com"
+                "STRESS_MODE": "OFF",
+                // "DB_PASSWORD": "Uudaew2eiyua8thei2wo",
+                // "DB_ENDPOINT": "database-1.cluster-cyeqog6cufmf.us-west-2.rds.amazonaws.com"
             }
         },
         {

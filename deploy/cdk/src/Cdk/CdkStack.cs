@@ -59,7 +59,7 @@ namespace Cdk
 
             var MySubnetGroup = new CfnSubnetGroup(this, "RedisClusterSubnetGroup", new CfnSubnetGroupProps
             {
-                CacheSubnetGroupName = "Private",
+                CacheSubnetGroupName = "PrivateWithNAT",
                 SubnetIds = vpc.SelectSubnets(new SubnetSelection { SubnetType = SubnetType.PRIVATE }).SubnetIds,
                 Description = "Private Subnets"
             });
