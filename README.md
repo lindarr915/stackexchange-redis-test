@@ -276,7 +276,10 @@ You can refer to the AWS CDK in /deploy/cdk to create ElastiCache Redis Cluster.
 
 1. Ensure the Redis Client you are using suppport cluster node, and being enabled. For redis cli, use `-c` to use cluster mode. 
 2. Redis Cluster does not support multiple databases like the standalone version of Redis. We only support database 0; the SELECT command is not allowed.
-3. Commands performing complex multi-key operations like set unions and intersections are implemented for cases where all of the keys involved in the operation hash to the same slot. In other words, commands `MGET` `MSET` will fail if keys are in different slot. 
+3. Commands performing complex multi-key operations like set unions and intersections are implemented for cases where all of the keys involved in the operation hash to the same slot.
+ - In other words, commands like `MGET`, `MSET`, will fail if keys are in different slot. 
+ - For Redis, a lot of commands (https://redis.io/commands/) can do with multi-key operations. For example, `DEL` Check the docs and check if multiple-key opertion is possible for the command. 
+ - LUA scripts and MULTI/EXEC commands will likely be the multi-key operations.       
 4. Using hash tags, clients are free to use multi-key operations. However, Multi-key operations may become unavailable when a resharding of the hash slot the keys belong to is in progress.
 5. Reading from Replica Nodes - mentioned earlier in #4 
 
